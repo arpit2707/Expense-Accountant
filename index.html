@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+     integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container" id="signUpContainer">
+            <form action="#" method="post" class="signUpForm">
+                <h1>Create An Account</h1>
+                <div class="social-container">
+                    <a href="#">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <span>Use your email for registration</span>
+                <input type="text" placeholder="Name" id="signUpName" required />
+                <input type="email" placeholder="Email"  id="signUpEmail" required />
+                <input type="password" placeholder="Password"  id="signUpPass" required />
+                <button id="signUpForm">Sign Up</button>
+                <br />
+            </form>
+        </div>
+        <div class="form-container sign-in-container" id="signInContainer">
+            <form action="#" method="post" class="signInForm">
+                <h1>Sign In</h1>
+                <div class="social-container">
+                    <a href="#">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <span>Login to your account</span>
+                <input type="text" placeholder="Name" id="nameInput" required />
+                <input type="email" placeholder="Email" id="emailInput" />
+                <input type="password" placeholder="password" id="passwordInput" required/>
+                <a href="#">Forgot your password</a>
+                <button id="signInForm" type="submit">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container" id="overlayContainer">
+            <div class="overlay" id="overlayId">
+                <div class="overlay-panel overlay-left" id="overlaySignIn">
+                    <h1>Have Already Account</h1>
+                    <p>To Keep Connect With Us Please Login With Your Account Here!</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                
+                <div class="overlay-panel overlay-right" id="overlaySignUp">
+                    <h1>Create Your Account</h1>
+                    <p>Enter Your Personal Detail And Start Journey With Us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
