@@ -42,6 +42,16 @@ exports.loggedIn = (req,res,next)=>{
                     res.send(modifiedData);
                 }
             })  
+        }else{
+            fs.readFile(indexHtmlFile,'utf-8',(err,data)=>{
+                if(err){
+                    res.status(500).send("Error reading index.html");
+                }else{
+            const modifiedData = `${data}\n<p>"Error : User not authorized"</p>`;
+                res.status(401);
+                res.send(modifiedData);
+            }
+        })
         }
     }).catch(errors=>{
         fs.readFile(indexHtmlFile,'utf-8',(err,data)=>{
