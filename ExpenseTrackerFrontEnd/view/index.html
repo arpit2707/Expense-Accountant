@@ -256,7 +256,7 @@
             </form>
         </div>
         <div class="form-container sign-in-container" id="signInContainer">
-            <form action="" method="post" class="signInForm">
+            <form action="/index-login" method="post" class="signInForm">
                 <h1>Sign In</h1>
                 <div class="social-container">
                     <a href="#">
@@ -266,9 +266,8 @@
                     </a>
                 </div>
                 <span>Login to your account</span>
-                <input type="text" placeholder="Name" id="nameInput" required />
-                <input type="email" placeholder="Email" id="emailInput" />
-                <input type="password" placeholder="password" id="passwordInput" required/>
+                <input type="email" placeholder="Email" id="emailInput" name="email" />
+                <input type="password" placeholder="password" id="passwordInput" name="password" required/>
                 <a href="#">Forgot your password</a>
                 <button id="signInForm" type="submit">Sign In</button>
             </form>

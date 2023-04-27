@@ -21,10 +21,36 @@ exports.addUser=(req,res,next)=>{
                 // handle the error
                 res.status(500).send('Error reading index.html');
               } else {
-                const errorMessage = 'There was an error processing your request.';
+
                 const modifiedData = `${data}\n<p class="error">${errors}</p>`;
                 res.send(modifiedData);
               }
+        })
+    })
+}
+
+exports.loggedIn = (req,res,next)=>{
+    console.log("entered");
+    userList.findOne({where: {email:req.body.email}})
+    .then(result=>{
+        if(result.password===req.body.password){
+            fs.readFile(indexHtmlFile,'utf-8',(err,data)=>{
+                if(err){
+                    res.status(500).send("Error reading index.html");
+                }else{
+                    const modifiedData =`<script> alert('User Logged In Successfully')</script> ${data}`;
+                    res.send(modifiedData);
+                }
+            })  
+        }
+    }).catch(errors=>{
+        fs.readFile(indexHtmlFile,'utf-8',(err,data)=>{
+            if(err){
+                res.status(500).send("Error reading index.html");
+            }else{
+                const modifiedData = `${data}\n<p class="error">${errors}</p>`;
+                res.send(modifiedData);
+            }
         })
     })
 }
