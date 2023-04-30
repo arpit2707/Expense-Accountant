@@ -3,9 +3,12 @@ const sequelize = require('./ExpenseTrackerBackend/util/db');
 const User = require('./ExpenseTrackerBackend/model/user');
 const bodyParser = require('body-parser');
 const indexes =  require('./ExpenseTrackerBackend/route/user');
+const path = require('path');
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname,'ExpenseTrackerFrontEnd','public'))); 
+
+app.use(bodyParser.json());
 app.use('/',indexes);
 
 sequelize.sync().then(result=>{
