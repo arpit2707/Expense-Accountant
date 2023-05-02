@@ -47,12 +47,11 @@ exports.deleteExpense=async(req,res,next)=>{
    const id=req.params.expenseId;
    
    if(id==undefined || id.length === 0){
-    return res.status(400).json({success:false});
+    return res.status(400).json({success:false,message:"trying to delete unavailable item"});
    }
-   
    await expenseT.destroy({where :{id:id}})
-   
+   return res.status(200).json({success:true,message:"Deleted Successfully"});
   } catch (err) {
-    return res.status(500).json({error:err,success:false});
+    return res.status(500).json({error:err,success:false,message:"Failed In Deleting"});
   }
 }
