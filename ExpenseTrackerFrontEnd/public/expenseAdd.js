@@ -46,4 +46,3 @@ function addNewExpensetoUI(expense){
                                 </li>`
                             
                             }
-
