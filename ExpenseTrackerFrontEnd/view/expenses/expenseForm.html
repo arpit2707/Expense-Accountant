@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+     integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="/expenseForm.css">
+</head>
+<body>
+    <form onsubmit="submitExpense(event)">
+    <span class="pad">Amount</span>
+    <input type="number" class="pad" name="amount" id="amount">
+    <span class="pad">Description</span>
+    <input type="text" class="pad" name="description" id="description">
+    <span class="pad">Category</span>
+    <select class="pad" name="category" id="category">
+        <option value="Food">Food</option>
+        <option value="Medical">Medical</option>
+        <option value="Travel">Travel</option>
+        <option value="Study">Study</option>
+    </select>
+    <button >Add Expense</button>
+    </form>
+        <ul id="listOfExpenses">
+
+        </ul>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/expenseAdd.js"></script>
+</body>
+</html>

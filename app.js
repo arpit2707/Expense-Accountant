@@ -3,6 +3,7 @@ const sequelize = require('./ExpenseTrackerBackend/util/db');
 const User = require('./ExpenseTrackerBackend/model/user');
 const bodyParser = require('body-parser');
 const indexes =  require('./ExpenseTrackerBackend/route/user');
+const expenses = require('./ExpenseTrackerBackend/route/expenseR');
 const path = require('path');
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.static(path.join(__dirname,'ExpenseTrackerFrontEnd','public')));
 
 app.use(bodyParser.json());
 app.use('/',indexes);
+app.use('/expense',expenses);
 
 sequelize.sync().then(result=>{
     return User.findByPk(1);
@@ -27,26 +29,3 @@ sequelize.sync().then(result=>{
 });
 
 app.listen(3000);
-
-// signInFormButton.addEventListener('click',async (event)=>{
-//     try
-//     {      
-//         event.preventDefault(); 
-//         const email = document.getElementById("emailInput").value;
-//         const password = document.getElementById("passwordInput").value;
-
-//         const userDetails = {
-//             email:email,
-//             password:password
-//         }
-//         const response = await axios.post('https://crudcrud.com/api/ace696f2fa4049578962d2a565346c46/myUser',userDetails);
-//         console.log(response);
-//         if(response.status === 201){
-//             container.classList.remove("right-panel-active");
-//         }else{
-//             throw new Error('Failed To Login')
-//         }
-//     }catch(error){
-//         document.body.innerHTML += `<div style="color:red;">${error} </div>`
-//     }
-// })

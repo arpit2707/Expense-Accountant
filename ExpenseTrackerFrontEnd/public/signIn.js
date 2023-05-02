@@ -13,7 +13,7 @@ async function signIn(e){
         console.log(signInDetails);
         const response = await axios.post("http://localhost:3000/index-login",signInDetails);
                 alert(response.data.message);
-            window.location.href="http://localhost:3000";
+            window.location.href="http://localhost:3000/expense/verified-user";
 
     }catch(err){
         document.body.innerHTML += `<div style="color:red;">${err.message}</div>`;

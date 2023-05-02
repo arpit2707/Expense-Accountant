@@ -3,14 +3,17 @@ const userList = require('../model/user');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 let indexHtmlFile = path.join(__dirname,'../../ExpenseTrackerFrontEnd/view/index.html');
+let expenseForm = path.join(__dirname,'../../ExpenseTrackerFrontEnd/view/expenses/expenseForm.html');
 
 function isstringinvalid(string){
-    if(string == undefined || string.length===0){
+
+    if(string == undefined || string.length === 0){
         return true;
     }else{
         return false;
     }
 }
+
 exports.getIndex=(req,res,next)=>{
     res.sendFile(indexHtmlFile);
 }
@@ -23,7 +26,8 @@ exports.addUser=async (req,res,next)=>{
             return res.status(400).json({err:"Bad Paramters . Something is missing"})
         }
         const saltrounds =10;
-    bcrypt.hash(password,saltrounds,async(err,hash)=>{
+
+        bcrypt.hash(password,saltrounds,async(err,hash)=>{
 
         console.log(err);
         await userList.create({name, email, password:hash});
@@ -32,7 +36,7 @@ exports.addUser=async (req,res,next)=>{
     })
     }catch(errors){
         res.status(500).json(errors);
-}
+    }
 }
 
 exports.loggedIn = async (req,res,next)=>{
