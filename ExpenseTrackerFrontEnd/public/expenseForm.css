@@ -8,7 +8,7 @@
 
 body{
     background-color: rgb(182, 168, 182);
-    display: flex;
+    display: grid;
     place-items:center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     height: 30vh;
