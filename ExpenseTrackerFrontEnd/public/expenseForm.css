@@ -50,7 +50,9 @@ button{
     margin: 8px 0;
     width: 100%;
  }
-
+ li{
+    background-color: antiquewhite;
+ }
  .pad{
     padding: 10px;
  }

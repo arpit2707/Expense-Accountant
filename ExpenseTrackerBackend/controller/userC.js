@@ -2,6 +2,7 @@ const path = require('path');
 const userList = require('../model/user');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
+const jwt =  require('jsonwebtoken');
 let indexHtmlFile = path.join(__dirname,'../../ExpenseTrackerFrontEnd/view/index.html');
 let expenseForm = path.join(__dirname,'../../ExpenseTrackerFrontEnd/view/expenses/expenseForm.html');
 
@@ -12,6 +13,10 @@ function isstringinvalid(string){
     }else{
         return false;
     }
+}
+
+function generateAccessToken(id,name){
+    return jwt.sign({userId:id , userName:name},'secretKey');
 }
 
 exports.getIndex=(req,res,next)=>{
@@ -51,7 +56,8 @@ exports.loggedIn = async (req,res,next)=>{
                 bcrypt.compare(password, user[0].password,(err,result)=>{
                 if(result){
                     console.log("entred password is same no error");
-                   res.status(200).json({success:true,message:"User logged in successfully"});
+                    //console.log(generateAccessToken(user[0].id,user[0].name));
+                   res.status(200).json({success:true,message:"User logged in successfully",token:generateAccessToken(user[0].id,user[0].name)});
                     } else{
                         console.log("password is worng");
                     return res.status(400).json({success:false,message:"Password is incorrect"});

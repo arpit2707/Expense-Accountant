@@ -1,6 +1,7 @@
 const express = require('express');
 const sequelize = require('./ExpenseTrackerBackend/util/db');
 const User = require('./ExpenseTrackerBackend/model/user');
+const Expense = require('./ExpenseTrackerBackend/model/expenseT');
 const bodyParser = require('body-parser');
 const indexes =  require('./ExpenseTrackerBackend/route/user');
 const expenses = require('./ExpenseTrackerBackend/route/expenseR');
@@ -9,6 +10,8 @@ const app = express();
 
 app.use(express.static(path.join(__dirname,'ExpenseTrackerFrontEnd','public'))); 
 
+Expense.belongsTo(User,{foreignKey:'userId'});
+User.hasMany(Expense,{foreignKey:'userId'});
 app.use(bodyParser.json());
 app.use('/',indexes);
 app.use('/expense',expenses);
