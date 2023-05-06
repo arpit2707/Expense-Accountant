@@ -1,3 +1,4 @@
+
 const submitExpense = async (event)=>{
     event.preventDefault();
     try{
@@ -45,7 +46,7 @@ const deleteexpense=async(event,expenseId)=>{
     }
    }
 
-function addNewExpensetoUI(expense){
+function addNewExpensetoUI(expense,user){
     console.log("ot coming");
     const parentElement =  document.getElementById('listOfExpenses');
     const expenseElemId = `expense-${expense.id}`;
@@ -53,5 +54,38 @@ function addNewExpensetoUI(expense){
                                     ${expense.amount} - ${expense.category} - ${expense.description}
                                     <button onclick='deleteexpense(event,${expense.id})'>Delete</button>
                                 </li>`
-                            
-                            }
+    }
+
+document.getElementById('premium').onclick = async function (e){
+    const token = localStorage.getItem('token');
+    console.log(`Button click hone pe aaya yahan tak`);
+
+    const response = await axios.get('http://localhost:3000/purchase/premiummembership',{headers:{"Authorization":`${token}`}});
+    console.log(`but fir yahan n aaya`);
+    var options = {
+        "key":response.data.key_id,//Enter the key ID generated from the dashboard
+        "order_id":response.data.orderid,//For one time payment
+        //this handler function is a callback function and it will only handle the process after success of payment
+        "handler":async function (response){
+
+           const transaction_Updated =  await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+                order_id:options.order_id,
+                payment_id:response.razorpay_payment_id,
+            },{headers:{"Authorization":token}})
+            alert('You are a Premium User Now');
+        }
+    };
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+    e.preventDefault();
+
+    rzp1.on('payment.failed', async(response)=>{
+        console.log("response me payment id hai ki n");
+        console.log(response);
+        await axios.post('http://localhost:3000/purchase/failedtransactionstatus',{
+                order_id:options.order_id,
+                payment_id:response.error.metadata.payment_id,
+            },{headers:{"Authorization":token}})
+        alert('Something went wrong in rzp1');
+    })
+}
