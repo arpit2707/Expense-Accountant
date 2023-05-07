@@ -5,7 +5,7 @@ let expenseHtmlFile = path.join(__dirname,'../../ExpenseTrackerFrontEnd/view/exp
 
 exports.profile =(req, res, next) => {
     try {
-
+      console.log("Pehle Profile me aaya");
       res.status(200).sendFile(expenseHtmlFile);
 
     } catch (error) {
@@ -37,7 +37,7 @@ exports.getExpense = async(req,res,next)=>{
   try {
     console.log("this is user IDDDDDDDDDDDDDD"+req.user.id);
     const expenses  = await req.user.getExpenses();//Insted of this magic function works like this const expenses  =  await expenseT.findAll({where:{userId:req.user.id}});
-      return res.status(200).json({expenses,success:true});
+    return res.status(200).json({expenses,success:true,ispremiumuser:req.user.ispremiumuser});
   } catch(err){
     console.log(err)
     return res.status(500).json({error:err,success:false});

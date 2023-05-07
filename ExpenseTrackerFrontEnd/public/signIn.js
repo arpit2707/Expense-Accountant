@@ -16,7 +16,6 @@ async function signIn(e){
                 localStorage.setItem('token',response.data.token);
                 console.log("sign in me token create hokar aa gya::"+localStorage.getItem('token'));
                 window.location.href="/expense/verified-user";
-
     }catch(err){
         document.body.innerHTML += `<div style="color:red;">${err.message}</div>`;
     }

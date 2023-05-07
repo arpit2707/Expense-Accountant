@@ -15,8 +15,8 @@ function isstringinvalid(string){
     }
 }
 
-function generateAccessToken(id,name){
-    return jwt.sign({userId:id , userName:name},'secretKey');
+function generateAccessToken(id,name,ispremiumuser){
+    return jwt.sign({userId:id , userName:name, premium:ispremiumuser},'secretKey');
 }
 
 exports.getIndex=(req,res,next)=>{
@@ -57,8 +57,8 @@ exports.loggedIn = async (req,res,next)=>{
                 if(result){
                     console.log("entred password is same no error");
                     //console.log(generateAccessToken(user[0].id,user[0].name));
-                   res.status(200).json({success:true,message:"User logged in successfully",token:generateAccessToken(user[0].id,user[0].name)});
-                    } else{
+                        res.status(200).json({success:true,message:"User logged in successfully",token:generateAccessToken(user[0].id, user[0].name, user[0].ispremiumuser)});
+                }else {
                         console.log("password is worng");
                     return res.status(400).json({success:false,message:"Password is incorrect"});
                     }

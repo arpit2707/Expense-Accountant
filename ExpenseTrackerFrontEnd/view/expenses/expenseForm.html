@@ -26,7 +26,17 @@
     </form>
     <ul id="listOfExpenses">
     </ul>
-    
+    <div id="conditional-element">
+        <button id="premium" class="premium" name="premium">Buy Premium</button>
+        <p id="premium-p">You are a premium user now.</p>
+    </div>
+
+    <div id="leaderboard">
+        <button id="show-leaderboard">Show Leaderboard</button>
+    </div>
+    <ol id="leaders" class="hidden">
+
+    </ol>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/expenseAdd.js"></script>

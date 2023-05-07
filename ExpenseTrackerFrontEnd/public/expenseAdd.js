@@ -13,23 +13,39 @@ const submitExpense = async (event)=>{
 
         console.log(`add hoke response aa gya`);
         console.log(response.data)
-        addNewExpensetoUI(response.data.response)
-
+        addNewExpensetoUI(response.data.response);
+        location.reload();
         event.target.amount.value='';
         event.target.description.value='';
     }catch(err){
         console.log(err);
     }
 }
+
+
 window.addEventListener('DOMContentLoaded',async ()=>{
     const token = localStorage.getItem('token');
     console.log("token expense fetch hone ke liye aa gya :::::"+token);
     const response = await axios.get("http://localhost:3000/expense/verified-user/expenses",{headers:{"Authorization":`${token}`}});
-    console.log("Fetch hone ke liye response aa gya");
+    console.log("Fetch hone ke liye response aa gya aur niche expense user h");
     response.data.expenses.forEach(expense => {
         addNewExpensetoUI(expense);
     });
+    if (response.data.ispremiumuser) {
+        // Add the element if the condition is true
+        const conditionalElement = document.getElementById("conditional-element");
+        const buttonElement = document.getElementById("premium");
+        conditionalElement.removeChild(buttonElement);
+      }else{
+        const conditionalElement = document.getElementById("conditional-element");
+        const leaderboard = document.getElementById("leaderboard");
+        const leaderboardButton = document.getElementById("show-leaderboard");
+        const pElement = document.getElementById("premium-p");
+        conditionalElement.removeChild(pElement);
+        leaderboard.removeChild(leaderboardButton);
+      }
 })
+
 
 const deleteexpense=async(event,expenseId)=>{
     const token = localStorage.getItem('token');
@@ -46,6 +62,7 @@ const deleteexpense=async(event,expenseId)=>{
     }
    }
 
+
 function addNewExpensetoUI(expense,user){
     console.log("ot coming");
     const parentElement =  document.getElementById('listOfExpenses');
@@ -55,6 +72,7 @@ function addNewExpensetoUI(expense,user){
                                     <button onclick='deleteexpense(event,${expense.id})'>Delete</button>
                                 </li>`
     }
+
 
 document.getElementById('premium').onclick = async function (e){
     const token = localStorage.getItem('token');
@@ -88,4 +106,18 @@ document.getElementById('premium').onclick = async function (e){
             },{headers:{"Authorization":token}})
         alert('Something went wrong in rzp1');
     })
+}
+
+document.getElementById('show-leaderboard').onclick = async function (e){
+    const token = localStorage.getItem('token');
+    const result=await axios.get('http://localhost:3000/purchase/showLeaderboard',{headers:{"Authorization":token}});
+    console.log(result);
+    const leaders = document.getElementById('leaders');
+    leaders.innerHTML='';
+    result.data.result.forEach(expense=>{
+        leaders.innerHTML += `<br> <li id=${expense.user.userId}>
+        ${expense.user.name} -- ${expense.totalAmount}
+        </li>`
+    });
+    leaders.classList.toggle('hidden'); // toggle visibility
 }
