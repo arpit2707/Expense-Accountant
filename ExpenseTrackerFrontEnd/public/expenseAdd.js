@@ -110,14 +110,12 @@ document.getElementById('premium').onclick = async function (e){
 
 document.getElementById('show-leaderboard').onclick = async function (e){
     const token = localStorage.getItem('token');
-    const result=await axios.get('http://localhost:3000/purchase/showLeaderboard',{headers:{"Authorization":token}});
-    console.log(result);
+    const result=await axios.get('http://localhost:3000/premium/showLeaderboard',{headers:{"Authorization":token}});
+    console.log(result.data.result[0]);
     const leaders = document.getElementById('leaders');
     leaders.innerHTML='';
     result.data.result.forEach(expense=>{
-        leaders.innerHTML += `<br> <li id=${expense.user.userId}>
-        ${expense.user.name} -- ${expense.totalAmount}
-        </li>`
+        leaders.innerHTML += `<br><li> ${expense.name} -- ${expense.totalExpense} </li>`
     });
     leaders.classList.toggle('hidden'); // toggle visibility
 }

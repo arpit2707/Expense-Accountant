@@ -1,6 +1,7 @@
 const path = require('path');
 const sequelize = require('sequelize');
 const expenseT = require('../model/expenseT');
+const User = require('../model/user');
 let expenseHtmlFile = path.join(__dirname,'../../ExpenseTrackerFrontEnd/view/expenses/expenseForm.html');
 
 exports.profile =(req, res, next) => {
@@ -19,13 +20,17 @@ exports.addExpense=async (req,res,next)=>{
   try {
 
     const {amount, description, category} = req.body;
-
+    
    if(amount == undefined || amount === 0){
     return res.status(400).json({success:false});
    }
     console.log(`amount is ${amount}  description is ${description}   category is ${category}  user id is ${req.user.id}`);
     const response = await expenseT.create({amount,description,category, userId: req.user.id});
-    console.log(response);
+    const newAmount = Number(req.user.totalExpense) + Number(amount); 
+    const resulting = await User.update({totalExpense:newAmount},{where:{id:req.user.id}})
+    //const resulting = await User.increment(totalExpense, { by: amount, where: { id: req.user.id } });
+    // console.log("resulting it here");
+    // console.log(resulting);
     return res.status(201).json({response, success:true });
   } catch(err){
     console.log(err);
@@ -47,14 +52,22 @@ exports.getExpense = async(req,res,next)=>{
 
 exports.deleteExpense=async(req,res,next)=>{
   try {
+   console.log("Here checking params");
+   console.log(req.params);
+
+
    const id=req.params.expenseId;
+   const reducingAmount = expenseT.findOne({ attributes:['amount'],where:{id:id}});
+   const newAmount = Number(req.user.totalExpense) - Number(reducingAmount); 
+    const resulting = await User.update({totalExpense:newAmount},{where:{id:req.user.id}})
    
    if(id==undefined || id.length === 0){
     return res.status(400).json({success:false,message:"trying to delete unavailable item"});
    }
-   await expenseT.destroy({where :{id:id , userId : req.user.id}})
+   await expenseT.destroy({where :{id:id , userId : req.user.id}});
    return res.status(200).json({success:true,message:"Deleted Successfully"});
   } catch (err) {
     return res.status(500).json({error:err,success:false,message:"Failed In Deleting"});
   }
 }
+

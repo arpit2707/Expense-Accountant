@@ -68,20 +68,3 @@ exports.updateTransactionStatus = async (req, res) => {
         }
         };
     
-
-    exports.showLeaderboard = async (req,res) =>{
-        try{
-            const result = await Expenses.findAll({
-                attributes:['userId',[Sequelizer.fn('SUM',Sequelizer.col('amount')),'totalAmount']],
-                group:['userId'],
-                include:[{model:User,
-                attributes:['id','name']}],
-                order: [[Sequelizer.literal('totalAmount DESC')]]
-            });
-
-            return res.status(201).json({success:true,message:'Successfully returned leaderboard data',result});
-        }catch(err){
-            console.log(err);
-            return res.status(403).json({success:false,message:'leaderboard failed'});
-        }
-    }
