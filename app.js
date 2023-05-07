@@ -25,7 +25,7 @@ app.use('/expense',expenses);
 app.use('/purchase',purchase);
 app.use('/premium',premium);
 
-sequelize.sync({force:true}).then(result=>{
+sequelize.sync().then(result=>{
     return User.findByPk(1);
 }).then(user=>{
 

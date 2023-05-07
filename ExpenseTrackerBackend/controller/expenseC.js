@@ -57,7 +57,7 @@ exports.deleteExpense=async(req,res,next)=>{
 
 
    const id=req.params.expenseId;
-   const reducingAmount = expenseT.findOne({ attributes:['amount'],where:{id:id}});
+   const reducingAmount =await expenseT.findOne({ attributes:['amount'],where:{id:id}});
    const newAmount = Number(req.user.totalExpense) - Number(reducingAmount); 
     const resulting = await User.update({totalExpense:newAmount},{where:{id:req.user.id}})
    
