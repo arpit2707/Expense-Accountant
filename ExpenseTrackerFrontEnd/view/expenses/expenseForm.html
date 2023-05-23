@@ -24,15 +24,17 @@
     </select>
     <button >Add Expense</button>
     </form>
+
     <ul id="listOfExpenses">
     </ul>
-    <div id="conditional-element">
+    <div id="conditional-element" class="Non-premium">
         <button id="premium" class="premium" name="premium">Buy Premium</button>
-        <p id="premium-p">You are a premium user now.</p>
     </div>
 
-    <div id="leaderboard">
+    <div id="leaderboard" class="isPremium">
+        <p id="premium-p">You are a premium user now.</p>
         <button id="show-leaderboard">Show Leaderboard</button>
+        <button id="download-expenses">Download</button>
     </div>
     <ol id="leaders" class="hidden">
 

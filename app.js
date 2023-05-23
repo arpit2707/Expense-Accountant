@@ -3,6 +3,7 @@ const sequelize = require("./ExpenseTrackerBackend/util/db");
 const User = require("./ExpenseTrackerBackend/model/user");
 const Expense = require("./ExpenseTrackerBackend/model/expenseT");
 const Order = require("./ExpenseTrackerBackend/model/order");
+const ExpenseFile = require("./ExpenseTrackerBackend/model/expenseFile");
 const bodyParser = require("body-parser");
 const indexes = require("./ExpenseTrackerBackend/route/user");
 const expenses = require("./ExpenseTrackerBackend/route/expenseR");
@@ -20,6 +21,10 @@ app.use(
   express.static(path.join(__dirname, "ExpenseTrackerFrontEnd", "public"))
 );
 app.use(cors());
+
+ExpenseFile.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(ExpenseFile, { foreignKey: "userId" });
+
 Expense.belongsTo(User, { foreignKey: "userId" });
 User.hasMany(Expense, { foreignKey: "userId" });
 

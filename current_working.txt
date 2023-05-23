@@ -1,0 +1,1 @@
+Adding full calender function and updating options to load expenses in window.addEventListener function.

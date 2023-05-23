@@ -9,4 +9,9 @@ route.get(
   premiumC.showLeaderboard
 );
 
+route.get(
+  "/downloadExpenses",
+  authenticatemiddleware.authenticate,
+  premiumC.downloadExpenseFile
+);
 module.exports = route;

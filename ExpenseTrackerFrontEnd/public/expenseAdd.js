@@ -32,22 +32,19 @@ window.addEventListener("DOMContentLoaded", async () => {
     "http://localhost:3000/expense/verified-user/expenses",
     { headers: { Authorization: `${token}` } }
   );
-  console.log("Fetch hone ke liye response aa gya aur niche expense user h");
+
   response.data.expenses.forEach((expense) => {
     addNewExpensetoUI(expense);
   });
+  const conditionalDiv = document.getElementById("conditional-element");
+  const leaderboardDiv = document.getElementById("leaderboard");
+
   if (response.data.ispremiumuser) {
-    // Add the element if the condition is true
-    const conditionalElement = document.getElementById("conditional-element");
-    const buttonElement = document.getElementById("premium");
-    conditionalElement.removeChild(buttonElement);
+    leaderboardDiv.style.display = "block";
+    conditionalDiv.style.display = "none";
   } else {
-    const conditionalElement = document.getElementById("conditional-element");
-    const leaderboard = document.getElementById("leaderboard");
-    const leaderboardButton = document.getElementById("show-leaderboard");
-    const pElement = document.getElementById("premium-p");
-    conditionalElement.removeChild(pElement);
-    leaderboard.removeChild(leaderboardButton);
+    leaderboardDiv.style.display = "none";
+    conditionalDiv.style.display = "block";
   }
 });
 
@@ -136,4 +133,20 @@ document.getElementById("show-leaderboard").onclick = async function (e) {
     leaders.innerHTML += `<br><li> ${expense.name} -- ${expense.totalExpense} </li>`;
   });
   leaders.classList.toggle("hidden"); // toggle visibility
+};
+
+document.getElementById("download-expenses").onclick = async function (e) {
+  const token = localStorage.getItem("token");
+  console.log("on click download fnction");
+  const response = await axios.get(
+    "http://localhost:3000/premium/downloadExpenses",
+    { headers: { Authorization: token } }
+  );
+
+  console.log("Download expenses");
+  var a = document.createElement("a");
+  console.log(`okaaayy  ::::: ${response.data.fileUrl}`);
+  a.href = response.data.fileUrl;
+  a.download = "Expense.txt";
+  a.click();
 };
