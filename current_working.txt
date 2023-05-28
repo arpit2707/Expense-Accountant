@@ -1,1 +1,92 @@
-Adding full calender function and updating options to load expenses in window.addEventListener function.
+[
+  expense {
+    dataValues: {
+      id: 8,
+      amount: 15,
+      description: 'auto rent',
+      category: 'Travel',
+      createdAt: 2023-05-24T10:32:31.000Z,
+      updatedAt: 2023-05-24T10:32:31.000Z,
+      userId: 4
+    },
+    _previousDataValues: {
+      id: 8,
+      amount: 15,
+      description: 'auto rent',
+      category: 'Travel',
+      createdAt: 2023-05-24T10:32:31.000Z,
+      updatedAt: 2023-05-24T10:32:31.000Z,
+      userId: 4
+    },
+    uniqno: 1,
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      raw: true,
+      attributes: [Array]
+    },
+    isNewRecord: false
+  },
+  expense {
+    dataValues: {
+      id: 9,
+      amount: 50,
+      description: 'taxi fare',
+      category: 'Travel',
+      createdAt: 2023-05-24T10:32:50.000Z,
+      updatedAt: 2023-05-24T10:32:50.000Z,
+      userId: 4
+    },
+    _previousDataValues: {
+      id: 9,
+      amount: 50,
+      description: 'taxi fare',
+      category: 'Travel',
+      createdAt: 2023-05-24T10:32:50.000Z,
+      updatedAt: 2023-05-24T10:32:50.000Z,
+      userId: 4
+    },
+    uniqno: 1,
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      raw: true,
+      attributes: [Array]
+    },
+    isNewRecord: false
+  },
+  expense {
+    dataValues: {
+      id: 10,
+      amount: 350,
+      description: 'zyrop 4000',
+      category: 'Medical',
+      createdAt: 2023-05-24T10:33:18.000Z,
+      updatedAt: 2023-05-24T10:33:18.000Z,
+      userId: 4
+    },
+    _previousDataValues: {
+      id: 10,
+      amount: 350,
+      description: 'zyrop 4000',
+      category: 'Medical',
+      createdAt: 2023-05-24T10:33:18.000Z,
+      updatedAt: 2023-05-24T10:33:18.000Z,
+      userId: 4
+    },
+    uniqno: 1,
+    _changed: Set(0) {},
+    _options: {
+      isNewRecord: false,
+      _schema: null,
+      _schemaDelimiter: '',
+      raw: true,
+      attributes: [Array]
+    },
+    isNewRecord: false
+  }
+]
