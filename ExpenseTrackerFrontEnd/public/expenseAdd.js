@@ -26,27 +26,94 @@ const submitExpense = async (event) => {
 };
 
 window.addEventListener("DOMContentLoaded", async () => {
+  //This part is fetching token and total count of expenses user has.This part is showing expenses on screen
+  // as per selected entries per page by user
   const token = localStorage.getItem("token");
   console.log("token expense fetch hone ke liye aa gya :::::" + token);
-  const response = await axios.get(
-    "http://localhost:3000/expense/verified-user/expenses",
-    { headers: { Authorization: `${token}` } }
+  const Page = document.getElementById("page");
+  localStorage.setItem("entrySize", Page.value);
+  const responseFromPage = await axios.get(
+    `http://localhost:3000/expense/verified-user/expenses/${1}`,
+    {
+      headers: {
+        Authorization: `${token}`,
+        entry_size: Page.value,
+      },
+    }
   );
-
-  response.data.expenses.forEach((expense) => {
+  console.log(responseFromPage.data);
+  const parentElement = document.getElementById("listOfExpenses");
+  parentElement.innerHTML = "";
+  responseFromPage.data.expense.rows.forEach((expense) => {
     addNewExpensetoUI(expense);
   });
+  doPagination(responseFromPage.data);
+
   const conditionalDiv = document.getElementById("conditional-element");
   const leaderboardDiv = document.getElementById("leaderboard");
 
-  if (response.data.ispremiumuser) {
+  if (responseFromPage.data.ispremiumuser) {
     leaderboardDiv.style.display = "block";
     conditionalDiv.style.display = "none";
   } else {
     leaderboardDiv.style.display = "none";
     conditionalDiv.style.display = "block";
   }
+
+  Page.addEventListener("change", async (event) => {
+    const SIZE = event.target.value;
+    localStorage.setItem("entrySize", Page.value);
+  });
 });
+
+function doPagination(data) {
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = ``;
+  if (data.hasPreviousPage) {
+    const btn2 = document.createElement("button");
+    btn2.innerHTML = `<h3>${data.prevPage}</h3>`;
+    btn2.addEventListener("click", () => getProducts(data.prevPage));
+    pagination.appendChild(btn2);
+  }
+
+  const btn1 = document.createElement("button");
+  btn1.innerHTML = `<h3>${data.currentPage}</h3>`;
+  btn1.addEventListener("click", () => getProducts(data.currentPage));
+  pagination.appendChild(btn1);
+
+  if (data.hasNextPage) {
+    const btn3 = document.createElement("button");
+    btn3.innerHTML = data.nextPage;
+    btn3.addEventListener("click", () => getProducts(data.nextPage));
+    pagination.appendChild(btn3);
+  }
+
+  const btnLast = document.createElement("button");
+  btnLast.innerHTML = data.lastPage;
+  btnLast.addEventListener("click", () => getProducts(data.lastPage));
+  pagination.appendChild(btnLast);
+}
+
+async function getProducts(page) {
+  const token = localStorage.getItem("token");
+  const entry_size = localStorage.getItem("entrySize");
+  const parentElement = document.getElementById("listOfExpenses");
+  const responseFromPage = await axios.get(
+    `http://localhost:3000/expense/verified-user/expenses/${page}`,
+    {
+      headers: {
+        Authorization: `${token}`,
+        entry_size: entry_size,
+      },
+    }
+  );
+  parentElement.innerHTML = "";
+  console.log(responseFromPage.data);
+  responseFromPage.data.expense.rows.forEach((expense) => {
+    addNewExpensetoUI(expense);
+  });
+  doPagination(responseFromPage.data);
+}
 
 const deleteexpense = async (event, expenseId) => {
   const token = localStorage.getItem("token");
@@ -68,6 +135,7 @@ const deleteexpense = async (event, expenseId) => {
 
 function addNewExpensetoUI(expense, user) {
   console.log("ot coming");
+
   const parentElement = document.getElementById("listOfExpenses");
   const expenseElemId = `expense-${expense.id}`;
   parentElement.innerHTML += `<br><li id=${expenseElemId}>

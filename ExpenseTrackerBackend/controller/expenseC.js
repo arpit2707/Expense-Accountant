@@ -1,5 +1,4 @@
 const path = require("path");
-const sequelize = require("sequelize");
 const expenseT = require("../model/expenseT");
 const User = require("../model/user");
 let expenseHtmlFile = path.join(
@@ -49,13 +48,54 @@ exports.addExpense = async (req, res, next) => {
   }
 };
 
-exports.getExpense = async (req, res, next) => {
+// exports.getExpense = async (req, res, next) => {
+//   try {
+//     console.log("this is user IDDDDDDDDDDDDDD" + req.user.id);
+//     const expenses = await expenseT.findAndCountAll({
+//       where: { userId: req.user.id },
+//       offset: 0,
+//       limit: 3,
+//     }); //Insted of this magic function works like this const expenses  =  await expenseT.findAll({where:{userId:req.user.id}});
+
+//     //trying accessing expenses after using findAndCountAll
+//     const dataValuesArray = expenses.rows.map((expense) => expense.dataValues);
+//     console.log(dataValuesArray);
+
+//     return res
+//       .status(200)
+//       .json({ expenses, success: true, ispremiumuser: req.user.ispremiumuser });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({ error: err, success: false });
+//   }
+// };
+
+exports.getPage = async (req, res) => {
   try {
     console.log("this is user IDDDDDDDDDDDDDD" + req.user.id);
-    const expenses = await req.user.getExpenses(); //Insted of this magic function works like this const expenses  =  await expenseT.findAll({where:{userId:req.user.id}});
-    return res
-      .status(200)
-      .json({ expenses, success: true, ispremiumuser: req.user.ispremiumuser });
+    console.log("Yahan tk aaya");
+    const page = req.params.pageNo;
+    let entry_size = parseInt(req.header("entry_size"));
+    const expense = await expenseT.findAndCountAll({
+      where: { userId: req.user.id },
+      offset: (page - 1) * entry_size,
+      limit: entry_size,
+    });
+    let totalExpenseCount = expense.count;
+    let curr = parseInt(page);
+    let prev = parseInt(page) - 1;
+    let next = parseInt(page) + 1;
+    return res.status(201).json({
+      expense,
+      success: true,
+      ispremiumuser: req.user.ispremiumuser,
+      currentPage: curr,
+      nextPage: next,
+      prevPage: prev,
+      hasNextPage: entry_size * curr < totalExpenseCount,
+      hasPreviousPage: curr > 1,
+      lastPage: Math.ceil(totalExpenseCount / entry_size),
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: err, success: false });

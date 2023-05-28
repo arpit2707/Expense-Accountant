@@ -9,10 +9,16 @@ route.post(
   userAuthentication.authenticate,
   ExpenseC.addExpense
 );
+// route.get(
+//   "/verified-user/expenses",
+//   userAuthentication.authenticate,
+//   ExpenseC.getExpense
+// );
+
 route.get(
-  "/verified-user/expenses",
+  "/verified-user/expenses/:pageNo",
   userAuthentication.authenticate,
-  ExpenseC.getExpense
+  ExpenseC.getPage
 );
 route.delete(
   "/verified-user/deleteExpenses/:expenseId",

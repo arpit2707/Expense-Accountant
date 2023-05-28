@@ -42,8 +42,6 @@ exports.sendResetLink = async (req, res) => {
         message: "Link to reset password sent to your mail ",
         sucess: true,
       });
-    } else {
-      throw new Error("User doesnt exist");
     }
   } catch (error) {
     console.log(error);
