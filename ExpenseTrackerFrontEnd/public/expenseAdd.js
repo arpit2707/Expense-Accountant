@@ -89,7 +89,7 @@ function doPagination(data) {
   }
 
   const btnLast = document.createElement("button");
-  btnLast.innerHTML = data.lastPage;
+  btnLast.innerHTML = "Last";
   btnLast.addEventListener("click", () => getProducts(data.lastPage));
   pagination.appendChild(btnLast);
 }
