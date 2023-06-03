@@ -35,7 +35,7 @@ exports.sendResetLink = async (req, res) => {
         to: receivers,
         subject: "Change Password Link",
         textContent: "Reset Password",
-        htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`,
+        htmlContent: `<a href="http://http://44.202.29.194:3000/password/resetpassword/${id}">Reset password</a>`,
       });
 
       return res.status(200).json({

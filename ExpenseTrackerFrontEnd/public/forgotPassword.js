@@ -12,7 +12,10 @@ function forgotpassword(e) {
     email: resetEmail.value,
   };
   const response = axios
-    .post("http://localhost:3000/password/sendResetLink", userDetails)
+    .post(
+      "http://http://44.202.29.194:3000/password/sendResetLink",
+      userDetails
+    )
     .then((response) => {
       if (response.status === 200) {
         document.body.innerHTML +=
