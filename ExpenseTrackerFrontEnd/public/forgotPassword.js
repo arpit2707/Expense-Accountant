@@ -13,7 +13,7 @@ function forgotpassword(e) {
   };
   const response = axios
     .post(
-      "http://http://44.202.29.194:3000/password/sendResetLink",
+      "http://http://18.206.230.45:3000/password/sendResetLink",
       userDetails
     )
     .then((response) => {
