@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 const uploadToS3 = (data, fileName) => {
-  const BUCKET_NAME = "publicexpensetracker";
+  const BUCKET_NAME = process.env.DEFAULT_S3_BUCKET;
   const IAM_USER_KEY = process.env.IAM_ACCESS_KEY;
   const IAM_SECRET_KEY = process.env.IAM_SECRET_KEY;
   return new Promise((resolve, reject) => {
