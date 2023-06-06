@@ -38,37 +38,13 @@ exports.addExpense = async (req, res, next) => {
       { totalExpense: newAmount },
       { where: { id: req.user.id } }
     );
-    //const resulting = await User.increment(totalExpense, { by: amount, where: { id: req.user.id } });
-    // console.log("resulting it here");
-    // console.log(resulting);
+
     return res.status(201).json({ response, success: true });
   } catch (err) {
     console.log(err);
     return res.status(403).json({ success: false, error: err });
   }
 };
-
-// exports.getExpense = async (req, res, next) => {
-//   try {
-//     console.log("this is user IDDDDDDDDDDDDDD" + req.user.id);
-//     const expenses = await expenseT.findAndCountAll({
-//       where: { userId: req.user.id },
-//       offset: 0,
-//       limit: 3,
-//     }); //Insted of this magic function works like this const expenses  =  await expenseT.findAll({where:{userId:req.user.id}});
-
-//     //trying accessing expenses after using findAndCountAll
-//     const dataValuesArray = expenses.rows.map((expense) => expense.dataValues);
-//     console.log(dataValuesArray);
-
-//     return res
-//       .status(200)
-//       .json({ expenses, success: true, ispremiumuser: req.user.ispremiumuser });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({ error: err, success: false });
-//   }
-// };
 
 exports.getPage = async (req, res) => {
   try {

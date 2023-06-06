@@ -7,7 +7,7 @@ const sequelize = new Sequelize(
   `${process.env.MYSQL_PASSWORD}`,
   {
     dialect: "mysql",
-    host: `${process.env.DEFAULT_HOSTNAME}`,
+    host: `${process.env.DEFAULT_HOST}`,
   }
 );
 

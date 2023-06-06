@@ -71,7 +71,7 @@ function doPagination(data) {
   pagination.innerHTML = ``;
   if (data.hasPreviousPage) {
     const btn2 = document.createElement("button");
-    btn2.innerHTML = `<h3>${data.prevPage}</h3>`;
+    btn2.innerHTML = "Prev";
     btn2.addEventListener("click", () => getProducts(data.prevPage));
     pagination.appendChild(btn2);
   }
