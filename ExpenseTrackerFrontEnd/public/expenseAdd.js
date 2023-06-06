@@ -71,12 +71,13 @@ function doPagination(data) {
   pagination.innerHTML = ``;
   if (data.hasPreviousPage) {
     const btn2 = document.createElement("button");
-    btn2.innerHTML = `<h3>${data.prevPage}</h3>`;
+    btn2.innerHTML = `<h3>"PREVIOUS DONE"</h3>`;
     btn2.addEventListener("click", () => getProducts(data.prevPage));
     pagination.appendChild(btn2);
   }
 
   const btn1 = document.createElement("button");
+
   btn1.innerHTML = `<h3>${data.currentPage}</h3>`;
   btn1.addEventListener("click", () => getProducts(data.currentPage));
   pagination.appendChild(btn1);
