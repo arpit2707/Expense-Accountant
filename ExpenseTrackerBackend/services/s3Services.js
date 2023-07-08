@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 const uploadToS3 = (data, fileName) => {
-  const BUCKET_NAME = "publicexpensetracker";
+  const BUCKET_NAME = "expensetrack";
   const IAM_USER_KEY = process.env.IAM_ACCESS_KEY;
   const IAM_SECRET_KEY = process.env.IAM_SECRET_KEY;
   return new Promise((resolve, reject) => {
@@ -17,7 +17,8 @@ const uploadToS3 = (data, fileName) => {
       Body: data,
       ACL: "public-read",
     };
-    //This upload function is asynchronous bcoz of which we are returning the promise we could have wrapped only upload into return promise callback
+    //This upload function is asynchronous bcoz of which we are returning the promise we could have wrapped only upload
+    // into return promise callback
     s3bucket.upload(params, (err, s3response) => {
       if (err) {
         console.log(err);
