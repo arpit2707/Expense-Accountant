@@ -52,6 +52,11 @@ app.use("/expense", expenses);
 app.use("/purchase", purchase);
 app.use("/premium", premium);
 app.use("/password", resetPasswordR);
+app.use((req, res) => {
+  res.sendFile(
+    path.join(__dirname, "ExpenseTrackerFrontEnd", `view`, `index.html`)
+  );
+});
 app.use(compression());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(
