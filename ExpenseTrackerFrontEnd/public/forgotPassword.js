@@ -1,9 +1,9 @@
 const forgotPasswordLink = document.getElementById("forgot-password");
 const forgotPasswordPopup = document.getElementById("forgot-password-popup");
 const resetEmail = document.getElementById("emailID");
+
 function forgotpassword(e) {
   e.preventDefault();
-
   // Do something with the email value, such as send it to a server for password reset
   forgotPasswordPopup.style.display = "none"; // Hide the popup box
   const form = new FormData(e.target);
@@ -12,7 +12,7 @@ function forgotpassword(e) {
     email: resetEmail.value,
   };
   const response = axios
-    .post("http://18.212.36.176:3000/password/sendResetLink", userDetails)
+    .post("http://localhost:3000/password/sendResetLink", userDetails)
     .then((response) => {
       if (response.status === 200) {
         document.body.innerHTML +=

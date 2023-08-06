@@ -1,5 +1,4 @@
 function signUpButton() {
-  console.log("Entered signup");
   container.classList.add("right-panel-active");
 }
 
@@ -16,12 +15,12 @@ async function signUp(e) {
     };
 
     const response = await axios.post(
-      "http://18.212.36.176:3000/index-signup",
+      "http://localhost:3000/index-signup",
       signUpDetails
     );
 
     if (response.status === 201 || 200) {
-      window.location.href = "http://18.212.36.176:3000";
+      window.location.href = "http://localhost:3000";
     } else {
       throw new Error("Failed to singup");
     }

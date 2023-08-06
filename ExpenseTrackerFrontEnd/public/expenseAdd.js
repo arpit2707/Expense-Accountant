@@ -7,16 +7,16 @@ const submitExpense = async (event) => {
       description: event.target.description.value,
       category: event.target.category.value,
     };
-    console.log(`toekn expense add hone liye aa gya  ${token}`);
+    console.log("FAYA");
     const response = await axios.post(
-      "http://18.212.36.176:3000/expense/verified-user",
+      "http://localhost:3000/expense/verified-user",
       expenseDetails,
       { headers: { Authorization: `${token}` } }
     );
 
     console.log(`add hoke response aa gya`);
-    console.log(response.data);
-    addNewExpensetoUI(response.data.response);
+    console.log(response);
+    // addNewExpensetoUI(response.data.expense);
     location.reload();
     event.target.amount.value = "";
     event.target.description.value = "";
@@ -30,11 +30,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   // as per selected entries per page by user
   try {
     const token = localStorage.getItem("token");
+    const ispremiumuser = localStorage.getItem("ispremiumuser");
     console.log("token expense fetch hone ke liye aa gya :::::" + token);
     const Page = document.getElementById("page");
     localStorage.setItem("entrySize", Page.value);
     const responseFromPage = await axios.get(
-      `http://18.212.36.176:3000/expense/verified-user/expenses/${1}`,
+      `http://localhost:3000/expense/verified-user/expenses/${1}`,
       {
         headers: {
           Authorization: `${token}`,
@@ -42,10 +43,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         },
       }
     );
+    console.log("Available Pagination Data");
     console.log(responseFromPage.data);
     const parentElement = document.getElementById("listOfExpenses");
     parentElement.innerHTML = "";
-    responseFromPage.data.expense.rows.forEach((expense) => {
+    responseFromPage.data.expense.forEach((expense) => {
       addNewExpensetoUI(expense);
     });
     doPagination(responseFromPage.data);
@@ -53,7 +55,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const conditionalDiv = document.getElementById("conditional-element");
     const leaderboardDiv = document.getElementById("leaderboard");
 
-    if (responseFromPage.data.ispremiumuser) {
+    if (ispremiumuser) {
       leaderboardDiv.style.display = "block";
       conditionalDiv.style.display = "none";
     } else {
@@ -108,7 +110,7 @@ async function getProducts(page) {
     const entry_size = localStorage.getItem("entrySize");
     const parentElement = document.getElementById("listOfExpenses");
     const responseFromPage = await axios.get(
-      `http://18.212.36.176:3000/expense/verified-user/expenses/${page}`,
+      `http://localhost:3000/expense/verified-user/expenses/${page}`,
       {
         headers: {
           Authorization: `${token}`,
@@ -118,7 +120,7 @@ async function getProducts(page) {
     );
     parentElement.innerHTML = "";
     console.log(responseFromPage.data);
-    responseFromPage.data.expense.rows.forEach((expense) => {
+    responseFromPage.data.expense.forEach((expense) => {
       addNewExpensetoUI(expense);
     });
     doPagination(responseFromPage.data);
@@ -133,7 +135,7 @@ const deleteexpense = async (event, expenseId) => {
     event.preventDefault();
     console.log("this expense" + expenseId);
     await axios.delete(
-      `http://18.212.36.176:3000/expense/verified-user/deleteExpenses/${expenseId}`,
+      `http://localhost:3000/expense/verified-user/deleteExpenses/${expenseId}`,
       { headers: { Authorization: `${token}` } }
     );
     const expenseElemId = `expense-${expenseId}`;
@@ -147,12 +149,13 @@ const deleteexpense = async (event, expenseId) => {
 
 function addNewExpensetoUI(expense, user) {
   console.log("ot coming");
-
+  console.log(expense._id);
   const parentElement = document.getElementById("listOfExpenses");
-  const expenseElemId = `expense-${expense.id}`;
+  const expenseElemId = `expense-${expense._id}`;
   parentElement.innerHTML += `<br><li id=${expenseElemId}>
                                     ${expense.amount} - ${expense.category} - ${expense.description}
-                                    <button onclick='deleteexpense(event,${expense.id})'>Delete</button>
+                                    <button onclick='deleteexpense(event, "${expense._id}")'>Delete</button>
+
                                 </li>`;
 }
 
@@ -162,23 +165,23 @@ document.getElementById("premium").onclick = async function (e) {
     console.log(`Button click hone pe aaya yahan tak`);
 
     const response = await axios.get(
-      "http://18.212.36.176:3000/purchase/premiummembership",
+      "http://localhost:3000/purchase/premiummembership",
       { headers: { Authorization: `${token}` } }
     );
-    console.log(`but fir yahan n aaya`);
     var options = {
       key: response.data.key_id, //Enter the key ID generated from the dashboard
       order_id: response.data.orderid, //For one time payment
       //this handler function is a callback function and it will only handle the process after success of payment
       handler: async function (response) {
         const transaction_Updated = await axios.post(
-          "http://18.212.36.176:3000/purchase/updatetransactionstatus",
+          "http://localhost:3000/purchase/updatetransactionstatus",
           {
             order_id: options.order_id,
             payment_id: response.razorpay_payment_id,
           },
           { headers: { Authorization: token } }
         );
+        localStorage.setItem("ispremiumuser", true);
         alert("You are a Premium User Now");
       },
     };
@@ -190,7 +193,7 @@ document.getElementById("premium").onclick = async function (e) {
       console.log("response me payment id hai ki n");
       console.log(response);
       await axios.post(
-        "http://18.212.36.176:3000/purchase/failedtransactionstatus",
+        "http://localhost:3000/purchase/failedtransactionstatus",
         {
           order_id: options.order_id,
           payment_id: response.error.metadata.payment_id,
@@ -208,7 +211,7 @@ document.getElementById("show-leaderboard").onclick = async function (e) {
   try {
     const token = localStorage.getItem("token");
     const result = await axios.get(
-      "http://18.212.36.176:3000/premium/showLeaderboard",
+      "http://localhost:3000/premium/showLeaderboard",
       { headers: { Authorization: token } }
     );
     console.log(result.data.result[0]);
@@ -228,7 +231,7 @@ document.getElementById("download-expenses").onclick = async function (e) {
     const token = localStorage.getItem("token");
     console.log("on click download fnction");
     const response = await axios.get(
-      "http://18.212.36.176:3000/premium/downloadExpenses",
+      "http://localhost:3000/premium/downloadExpenses",
       { headers: { Authorization: token } }
     );
 

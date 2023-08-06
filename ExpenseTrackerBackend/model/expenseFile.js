@@ -1,14 +1,30 @@
-const sequelize = require("sequelize");
-const sequelizer = require("../util/db");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const fileT = sequelizer.define("expenseFile", {
-  id: {
-    type: sequelize.Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
+const fileT = new Schema({
+  fileUrl: {
+    type: String,
+    required: true,
   },
-  fileUrl: sequelize.STRING,
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
 });
-
-module.exports = fileT;
+module.exports = mongoose.model("expensefiles", fileT);
+// const getDb = require("../util/db").getDb;
+// class fileT {
+//   constructor(fileUrl) {
+//     this.fileUrl = fileUrl;
+//   }
+//   async save() {
+//     try {
+//       const db = getDb();
+//       const response = await db.collection("expenseFile").insertOne(this);
+//       console.log(response);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// }

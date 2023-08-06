@@ -9,11 +9,6 @@ route.post(
   userAuthentication.authenticate,
   ExpenseC.addExpense
 );
-// route.get(
-//   "/verified-user/expenses",
-//   userAuthentication.authenticate,
-//   ExpenseC.getExpense
-// );
 
 route.get(
   "/verified-user/expenses/:pageNo",

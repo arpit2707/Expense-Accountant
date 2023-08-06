@@ -47,8 +47,18 @@ exports.addUser = async (req, res, next) => {
     const saltrounds = 10;
 
     bcrypt.hash(password, saltrounds, async (err, hash) => {
-      console.log(err);
-      await userList.create({ name, email, password: hash });
+      if (err) {
+        throw err;
+      }
+      const newUser = new userList({
+        name: name,
+        email: email,
+        password: hash,
+        ispremiumuser: false,
+        totalExpense: 0,
+      });
+      await newUser.save();
+      // await userList.create({ name, email, password: hash });
       res.status(201).json({ message: "successfully created new user" });
     });
   } catch (errors) {
@@ -65,23 +75,18 @@ exports.loggedIn = async (req, res, next) => {
         .status(400)
         .json({ err: "Bad Paramters . Something is missing" });
     }
-    const user = await userList.findAll({ where: { email } });
-    if (user.length > 0) {
-      bcrypt.compare(password, user[0].password, (err, result) => {
+    const user = await userList.findOne({ email: email });
+    if (user) {
+      bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
           console.log("entred password is same no error");
           //console.log(generateAccessToken(user[0].id,user[0].name));
-          res
-            .status(200)
-            .json({
-              success: true,
-              message: "User logged in successfully",
-              token: generateAccessToken(
-                user[0].id,
-                user[0].name,
-                user[0].ispremiumuser
-              ),
-            });
+          console.log(user);
+          res.status(200).json({
+            success: true,
+            message: "User logged in successfully",
+            token: generateAccessToken(user._id, user.name, user.ispremiumuser),
+          });
         } else {
           console.log("password is worng");
           return res

@@ -11,12 +11,16 @@ require("dotenv").config();
 
 exports.sendResetLink = async (req, res) => {
   try {
-    const user = await User.findOne({ where: { email: `${req.body.email}` } });
+    const user = await User.findOne({ email: `${req.body.email}` });
     if (user) {
       const id = uuid.v4();
-      user.createForgotPassword({ id, active: true }).catch((err) => {
-        throw new Error(err);
+      const result = new ForgotPassword({
+        pid: id,
+        active: true,
+        userId: user._id,
       });
+      await result.save();
+      console.log("Here is forgot" + result);
       const tranEmailApi = new Sib.TransactionalEmailsApi();
 
       const sender = {
@@ -35,7 +39,7 @@ exports.sendResetLink = async (req, res) => {
         to: receivers,
         subject: "Change Password Link",
         textContent: "Reset Password",
-        htmlContent: `<a href="http://18.212.36.176:3000/password/resetpassword/${id}">Reset password</a>`,
+        htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`,
       });
 
       return res.status(200).json({
@@ -53,10 +57,11 @@ exports.resetpassword = async (req, res) => {
   try {
     const id = req.params.id;
     const forgotpasswordrequest = await ForgotPassword.findOne({
-      where: { id },
+      pid: id,
     });
     if (forgotpasswordrequest.active) {
-      forgotpasswordrequest.update({ active: false });
+      forgotpasswordrequest.active = false;
+      await forgotpasswordrequest.save();
       res.status(200).send(`<html>
                                     <script>
                                         function formsubmitted(e){
@@ -84,12 +89,10 @@ exports.updatepassword = async (req, res) => {
     const { newpassword } = req.query;
     const { resetpasswordid } = req.params;
     const resetpasswordrequest = await ForgotPassword.findOne({
-      where: { id: resetpasswordid },
+      pid: resetpasswordid,
     });
 
-    const user = await User.findOne({
-      where: { id: resetpasswordrequest.userId },
-    });
+    const user = await User.findOne({ _id: resetpasswordrequest.userId });
 
     if (user) {
       const saltRounds = 10;
@@ -104,7 +107,8 @@ exports.updatepassword = async (req, res) => {
             console.log(err);
             throw new Error(err);
           }
-          user.update({ password: hash }).then(() => {
+          user.password = hash;
+          user.save().then(() => {
             res
               .status(200)
               .json({ message: "Successfuly update the new password" });

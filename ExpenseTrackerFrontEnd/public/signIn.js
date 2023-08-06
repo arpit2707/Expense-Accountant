@@ -11,12 +11,13 @@ async function signIn(e) {
     };
     console.log(signInDetails);
     const response = await axios.post(
-      "http://18.212.36.176:3000/index-login",
+      "http://localhost:3000/index-login",
       signInDetails
     );
     console.log(response);
     alert(response.data.message);
     localStorage.setItem("token", response.data.token);
+    localStorage.setItem("ispremiumuser", response.data.ispremiumuser);
     console.log(
       "sign in me token create hokar aa gya::" + localStorage.getItem("token")
     );
