@@ -6,7 +6,7 @@ const Expenses = require("../model/expenseT");
 // const Sequelizer = require("sequelize");
 require("dotenv").config();
 
-exports.purchasePremium = async (req, res) => {
+const purchasePremium = async (req, res) => {
   try {
     console.log(`Yahan tk aaya`);
     const key_id = process.env.RAZORPAY_KEY_ID;
@@ -34,7 +34,7 @@ exports.purchasePremium = async (req, res) => {
   }
 };
 
-exports.updateTransactionStatus = async (req, res) => {
+const updateTransactionStatus = async (req, res) => {
   try {
     const { payment_id, order_id } = req.body;
     console.log("Aa gya success update karne");
@@ -64,7 +64,7 @@ exports.updateTransactionStatus = async (req, res) => {
   }
 };
 
-exports.failedTransactionStatus = async (req, res) => {
+const failedTransactionStatus = async (req, res) => {
   try {
     const { payment_id, order_id } = req.body;
 
@@ -83,4 +83,9 @@ exports.failedTransactionStatus = async (req, res) => {
   } catch (err) {
     return res.status(403).json({ success: false, message: "UPDATION failed" });
   }
+};
+module.exports = {
+  purchasePremium,
+  updateTransactionStatus,
+  failedTransactionStatus,
 };

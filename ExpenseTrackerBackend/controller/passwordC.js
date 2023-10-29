@@ -9,7 +9,7 @@ const apiKey = client.authentications["api-key"];
 apiKey.apiKey = process.env.SEND_IN_BLUE_API_KEY;
 require("dotenv").config();
 
-exports.sendResetLink = async (req, res) => {
+const sendResetLink = async (req, res) => {
   try {
     const user = await User.findOne({ email: `${req.body.email}` });
     if (user) {
@@ -53,7 +53,7 @@ exports.sendResetLink = async (req, res) => {
   }
 };
 
-exports.resetpassword = async (req, res) => {
+const resetpassword = async (req, res) => {
   try {
     const id = req.params.id;
     const forgotpasswordrequest = await ForgotPassword.findOne({
@@ -84,7 +84,7 @@ exports.resetpassword = async (req, res) => {
   }
 };
 
-exports.updatepassword = async (req, res) => {
+const updatepassword = async (req, res) => {
   try {
     const { newpassword } = req.query;
     const { resetpasswordid } = req.params;
@@ -122,3 +122,4 @@ exports.updatepassword = async (req, res) => {
     return res.status(403).json({ error, success: false });
   }
 };
+module.exports = { resetpassword, sendResetLink, updatepassword };

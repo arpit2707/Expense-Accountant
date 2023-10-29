@@ -1,15 +1,18 @@
 const path = require("path");
 const expenseT = require("../model/expenseT");
 const User = require("../model/user");
+const { body, validationResult } = require("express-validator");
 let expenseHtmlFile = path.join(
   __dirname,
   "../../ExpenseTrackerFrontEnd/view/expenses/expenseForm.html"
 );
 
-exports.profile = (req, res, next) => {
+const profile = (req, res, next) => {
   try {
     console.log("Pehle Profile me aaya");
-    res.status(200).sendFile(expenseHtmlFile);
+    if (expenseHtmlFile) {
+      return res.status(200).sendFile(expenseHtmlFile);
+    }
   } catch (error) {
     return res
       .status(500)
@@ -17,42 +20,49 @@ exports.profile = (req, res, next) => {
   }
 };
 
-exports.addExpense = async (req, res, next) => {
+const addExpense = async (req, res, next) => {
   try {
-    const { amount, description, category } = req.body;
-
-    if (amount == undefined || amount === 0) {
-      return res.status(400).json({ success: false });
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("invalid result", result);
     }
-    console.log(req.user);
-    const expense = new expenseT({
-      amount: amount,
-      description: description,
-      category: category,
-      userId: req.user._id,
-    });
-    await expense.save();
-    const newAmount = Number(req.user.totalExpense) + Number(amount);
-    const resulting = await User.findOneAndUpdate(
-      { _id: req.user._id },
-      {
-        $set: {
-          totalExpense: newAmount,
-        },
-        $push: {
-          expenses: expense._id,
-        },
+    if (result.isEmpty()) {
+      console.log("Valid Result", result);
+      const { amount, description, category } = req.body;
+
+      if (amount == undefined || amount === 0) {
+        return res.status(400).json({ success: false });
       }
-    );
-    console.log("Expense Consoling" + expense);
-    return res.status(201).json({ expense });
+      const expense = new expenseT({
+        amount: amount,
+        description: description,
+        category: category,
+        userId: req.user._id,
+      });
+      await expense.save();
+      const newAmount = Number(req.user.totalExpense) + Number(amount);
+
+      const resulting = await User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          $set: {
+            totalExpense: newAmount,
+          },
+          $push: {
+            expenses: expense._id,
+          },
+        }
+      );
+      console.log("Expense Consoling" + expense);
+      return res.status(201).json({ expense });
+    }
   } catch (err) {
     console.log(err);
     return res.status(403).json({ success: false, error: err });
   }
 };
 
-exports.getPage = async (req, res) => {
+const getPage = async (req, res) => {
   try {
     console.log("this is user IDDDDDDDDDDDDDD" + req.user._id);
     console.log("Yahan tk aaya");
@@ -88,7 +98,7 @@ exports.getPage = async (req, res) => {
   }
 };
 
-exports.deleteExpense = async (req, res, next) => {
+const deleteExpense = async (req, res, next) => {
   try {
     console.log(req.params);
 
@@ -121,3 +131,5 @@ exports.deleteExpense = async (req, res, next) => {
       .json({ error: err, success: false, message: "Failed In Deleting" });
   }
 };
+
+module.exports = { profile, addExpense, getPage, deleteExpense };

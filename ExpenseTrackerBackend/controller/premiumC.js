@@ -9,7 +9,7 @@ const path = require("path");
 require("dotenv").config();
 // //const convertToCsv = require("your-csv-converter-library");
 
-exports.showLeaderboard = async (req, res) => {
+const showLeaderboard = async (req, res) => {
   try {
     const result = await User.find({})
       .select("name totalExpense") // Equivalent to attributes: ["name", "totalExpense"]
@@ -28,7 +28,7 @@ exports.showLeaderboard = async (req, res) => {
   }
 };
 
-exports.downloadExpenseFile = async (req, res) => {
+const downloadExpenseFile = async (req, res) => {
   try {
     const result = await Expense.find({ userId: req.user._id });
     const expenseData = JSON.stringify(result);
@@ -46,3 +46,4 @@ exports.downloadExpenseFile = async (req, res) => {
     console.log(error);
   }
 };
+module.exports = { showLeaderboard, downloadExpenseFile };

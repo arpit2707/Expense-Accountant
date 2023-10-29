@@ -17,6 +17,7 @@ const Expenses = new Schema({
   },
   ispremiumuser: {
     type: Boolean,
+    default: false,
   },
   totalExpense: {
     type: Number,

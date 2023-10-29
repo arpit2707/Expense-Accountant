@@ -17,7 +17,11 @@ async function signIn(e) {
     console.log(response);
     alert(response.data.message);
     localStorage.setItem("token", response.data.token);
-    localStorage.setItem("ispremiumuser", response.data.ispremiumuser);
+    if (
+      response.data.ispremiumuser == undefined ||
+      response.data.ispremiumuser == null
+    )
+      localStorage.setItem("ispremiumuser", false);
     console.log(
       "sign in me token create hokar aa gya::" + localStorage.getItem("token")
     );

@@ -11,27 +11,26 @@ let expenseForm = path.join(
   __dirname,
   "../../ExpenseTrackerFrontEnd/view/expenses/expenseForm.html"
 );
-
-function isstringinvalid(string) {
+const isstringinvalid = (string) => {
   if (string == undefined || string.length === 0) {
     return true;
   } else {
     return false;
   }
-}
+};
 
-function generateAccessToken(id, name, ispremiumuser) {
+const generateAccessToken = (id, name, ispremiumuser) => {
   return jwt.sign(
     { userId: id, userName: name, premium: ispremiumuser },
     "secretKey"
   );
-}
+};
 
-exports.getIndex = (req, res, next) => {
+const getIndex = (req, res, next) => {
   res.sendFile(indexHtmlFile);
 };
 
-exports.addUser = async (req, res, next) => {
+const addUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -66,7 +65,7 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
-exports.loggedIn = async (req, res, next) => {
+const loggedIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -103,3 +102,4 @@ exports.loggedIn = async (req, res, next) => {
     return res.status(500).json({ message: err, success: false });
   }
 };
+module.exports = { getIndex, addUser, loggedIn };

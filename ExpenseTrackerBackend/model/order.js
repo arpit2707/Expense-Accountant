@@ -20,8 +20,8 @@ const Order = new Schema({
 });
 
 module.exports = mongoose.model("orders", Order);
-// // const Sequelize = require("sequelize");
 
+// // const Sequelize = require("sequelize");
 // // const sequelize = require("../util/db");
 
 // // const Order = sequelize.define("orders", {

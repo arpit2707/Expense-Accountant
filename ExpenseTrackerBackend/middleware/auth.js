@@ -3,13 +3,21 @@ const User = require("../model/user");
 
 const authenticate = async (req, res, next) => {
   try {
-    const token = req.header("Authorization");
-    const userP = jwt.verify(token, "secretKey");
-    const user = await User.findById(userP.userId);
-    console.log(userP);
-    console.log(user);
-    req.user = user;
-    next();
+    if (req.header("Authorization")) {
+      console.log("TOKEN");
+      const token = req.header("Authorization");
+      const userP = jwt.verify(token, "secretKey");
+      if (userP) {
+        console.log("USERP");
+        const user = await User.findById(userP.userId);
+        req.user = user;
+        next();
+      } else {
+        return res.status(400).send({ message: "User not authentic" });
+      }
+    } else {
+      return res.status(400).send({ message: "User not available" });
+    }
   } catch (err) {
     console.log(err);
     return res

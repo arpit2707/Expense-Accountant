@@ -7,16 +7,13 @@ const submitExpense = async (event) => {
       description: event.target.description.value,
       category: event.target.category.value,
     };
-    console.log("FAYA");
+
     const response = await axios.post(
       "http://localhost:3000/expense/verified-user",
       expenseDetails,
       { headers: { Authorization: `${token}` } }
     );
 
-    console.log(`add hoke response aa gya`);
-    console.log(response);
-    // addNewExpensetoUI(response.data.expense);
     location.reload();
     event.target.amount.value = "";
     event.target.description.value = "";
@@ -31,7 +28,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   try {
     const token = localStorage.getItem("token");
     const ispremiumuser = localStorage.getItem("ispremiumuser");
-    console.log("token expense fetch hone ke liye aa gya :::::" + token);
     const Page = document.getElementById("page");
     localStorage.setItem("entrySize", Page.value);
     const responseFromPage = await axios.get(
@@ -43,25 +39,16 @@ window.addEventListener("DOMContentLoaded", async () => {
         },
       }
     );
-    console.log("Available Pagination Data");
-    console.log(responseFromPage.data);
+
     const parentElement = document.getElementById("listOfExpenses");
     parentElement.innerHTML = "";
     responseFromPage.data.expense.forEach((expense) => {
       addNewExpensetoUI(expense);
     });
+
     doPagination(responseFromPage.data);
 
-    const conditionalDiv = document.getElementById("conditional-element");
-    const leaderboardDiv = document.getElementById("leaderboard");
-
-    if (ispremiumuser) {
-      leaderboardDiv.style.display = "block";
-      conditionalDiv.style.display = "none";
-    } else {
-      leaderboardDiv.style.display = "none";
-      conditionalDiv.style.display = "block";
-    }
+    premiumPrevilege(ispremiumuser);
 
     Page.addEventListener("change", async (event) => {
       const SIZE = event.target.value;
@@ -71,6 +58,19 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.log(error);
   }
 });
+
+function premiumPrevilege(ispremiumuser) {
+  const conditionalDiv = document.getElementById("conditional-element");
+  const leaderboardDiv = document.getElementById("leaderboard");
+
+  if (ispremiumuser == true) {
+    leaderboardDiv.style.display = "block";
+    conditionalDiv.style.display = "none";
+  } else {
+    leaderboardDiv.style.display = "none";
+    conditionalDiv.style.display = "block";
+  }
+}
 
 function doPagination(data) {
   try {
@@ -164,6 +164,7 @@ document.getElementById("premium").onclick = async function (e) {
     const token = localStorage.getItem("token");
     console.log(`Button click hone pe aaya yahan tak`);
 
+    //convert razorpay to services folder for a reusable code functionality
     const response = await axios.get(
       "http://localhost:3000/purchase/premiummembership",
       { headers: { Authorization: `${token}` } }
@@ -208,6 +209,7 @@ document.getElementById("premium").onclick = async function (e) {
 };
 
 document.getElementById("show-leaderboard").onclick = async function (e) {
+  //convert show leaderboard functionality to services folder and make an api call for clean code and reusability
   try {
     const token = localStorage.getItem("token");
     const result = await axios.get(
@@ -227,6 +229,7 @@ document.getElementById("show-leaderboard").onclick = async function (e) {
 };
 
 document.getElementById("download-expenses").onclick = async function (e) {
+  ////convert download expense functionality to services folder and make an api call for clean code and reusability
   try {
     const token = localStorage.getItem("token");
     console.log("on click download fnction");
