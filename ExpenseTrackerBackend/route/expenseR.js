@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 const ExpenseC = require("../controller/expenseC");
 const userAuthentication = require("../middleware/auth");
-const { body, validationResult } = require("express-validator");
+const { body, params, header } = require("express-validator");
 
 route.get("/verified-user", ExpenseC.profile);
 
@@ -17,10 +17,14 @@ route.post(
   addExpenseValidator,
   ExpenseC.addExpense
 );
-
+const getPageValidator = [
+  params("pageNo").notEmpty(),
+  header("entry_size").trim().notEmpty(),
+];
 route.get(
   "/verified-user/expenses/:pageNo",
   userAuthentication.authenticate,
+  getPageValidator,
   ExpenseC.getPage
 );
 route.delete(

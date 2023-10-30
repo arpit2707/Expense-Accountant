@@ -25,6 +25,7 @@ const addExpense = async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
       console.log("invalid result", result);
+      return res.status(500).send({ success: false, error: result });
     }
     if (result.isEmpty()) {
       console.log("Valid Result", result);
@@ -53,7 +54,6 @@ const addExpense = async (req, res, next) => {
           },
         }
       );
-      console.log("Expense Consoling" + expense);
       return res.status(201).json({ expense });
     }
   } catch (err) {
@@ -64,8 +64,11 @@ const addExpense = async (req, res, next) => {
 
 const getPage = async (req, res) => {
   try {
-    console.log("this is user IDDDDDDDDDDDDDD" + req.user._id);
-    console.log("Yahan tk aaya");
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("invalid result", result);
+      return res.status(500).send({ success: false, error: result });
+    }
     const page = req.params.pageNo;
     let entry_size = parseInt(req.header("entry_size"));
     const expense = await expenseT
