@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../model/user");
-
+//Pending Data Validation
 const authenticate = async (req, res, next) => {
   try {
     if (req.header("Authorization")) {
